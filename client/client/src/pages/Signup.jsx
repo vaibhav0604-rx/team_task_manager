@@ -34,7 +34,7 @@ const Signup = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <input type="text" name="name" placeholder="Full Name" value={form.name} onChange={handleChange} className="w-full border px-4 py-2 rounded-lg" required />
           <input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} className="w-full border px-4 py-2 rounded-lg" required />
-          <input type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} className="w-full border px-4 py-2 rounded-lg" required />
+          <input type="password" name="password" placeholder="Password (min 6 characters)" value={form.password} onChange={handleChange} className="w-full border px-4 py-2 rounded-lg" minLength={6} required />
           <select name="role" value={form.role} onChange={handleChange} className="w-full border px-4 py-2 rounded-lg">
             <option value="member">Member</option>
             <option value="admin">Admin</option>

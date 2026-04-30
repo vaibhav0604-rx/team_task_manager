@@ -48,10 +48,10 @@ const Dashboard = () => {
       <Toaster />
       <Navbar />
       <div className="max-w-5xl mx-auto p-6">
-        <h2 className="text-2xl font-bold mb-6">Welcome back, {user?.name}! 👋</h2>
+        <h2 className="text-2xl font-bold mb-6">Welcome back, {user?.name}!</h2>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <div className="bg-white p-6 rounded-xl shadow text-center">
             <p className="text-4xl font-bold text-blue-600">{stats.total}</p>
             <p className="text-gray-500 mt-1">Total Tasks</p>
@@ -74,17 +74,20 @@ const Dashboard = () => {
           ) : (
             <div className="space-y-3">
               {tasks.map((task) => (
-                <div key={task.id} className="flex items-center justify-between border p-4 rounded-lg">
+                <div key={task.id} className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between border p-4 rounded-lg">
                   <div>
                     <p className="font-semibold">{task.title}</p>
                     <p className="text-sm text-gray-500">{task.description}</p>
+                    {task.project_name && (
+                      <p className="text-xs text-blue-500 mt-1">{task.project_name}</p>
+                    )}
                     {task.due_date && (
                       <p className="text-xs text-gray-400 mt-1">
                         Due: {new Date(task.due_date).toLocaleDateString()}
                       </p>
                     )}
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <span className={`text-xs px-2 py-1 rounded-full font-semibold
                       ${task.priority === 'high' ? 'bg-red-100 text-red-600' :
                         task.priority === 'medium' ? 'bg-yellow-100 text-yellow-600' :

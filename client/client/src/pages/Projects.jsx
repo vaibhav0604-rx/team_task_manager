@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom';
 import API from '../api/axios';
 import Navbar from '../components/Navbar';
 import toast, { Toaster } from 'react-hot-toast';
+import { useAuth } from '../context/AuthContext';
 
 const Projects = () => {
+  const { user } = useAuth();
   const [projects, setProjects] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ name: '', description: '' });
+  const isAdmin = user?.role === 'admin';
 
   useEffect(() => {
     fetchProjects();
@@ -31,7 +34,7 @@ const Projects = () => {
       setShowForm(false);
       fetchProjects();
     } catch (err) {
-      toast.error('Failed to create project');
+      toast.error(err.response?.data?.message || 'Failed to create project');
     }
   };
 
@@ -42,9 +45,11 @@ const Projects = () => {
       <div className="max-w-5xl mx-auto p-6">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Projects</h2>
-          <button onClick={() => setShowForm(!showForm)} className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700">+ New Project</button>
+          {isAdmin && (
+            <button onClick={() => setShowForm(!showForm)} className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700">+ New Project</button>
+          )}
         </div>
-        {showForm && (
+        {isAdmin && showForm && (
           <div className="bg-white p-6 rounded-xl shadow mb-6">
             <h3 className="text-lg font-semibold mb-4">Create New Project</h3>
             <form onSubmit={handleSubmit} className="space-y-3">
@@ -60,7 +65,9 @@ const Projects = () => {
         {projects.length === 0 ? (
           <div className="bg-white rounded-xl shadow p-12 text-center">
             <p className="text-gray-400 text-lg">No projects yet!</p>
-            <p className="text-gray-400 text-sm mt-1">Click "New Project" to get started</p>
+            <p className="text-gray-400 text-sm mt-1">
+              {isAdmin ? 'Click "New Project" to get started' : 'An admin can add you to a project'}
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -68,7 +75,14 @@ const Projects = () => {
               <Link to={`/projects/${project.id}`} key={project.id} className="bg-white p-6 rounded-xl shadow hover:shadow-md transition block">
                 <h3 className="text-lg font-bold text-blue-600">{project.name}</h3>
                 <p className="text-gray-500 text-sm mt-1">{project.description}</p>
-                <p className="text-xs text-gray-400 mt-3">Created: {new Date(project.created_at).toLocaleDateString()}</p>
+                <div className="flex items-center justify-between gap-3 mt-3">
+                  <p className="text-xs text-gray-400">Created: {new Date(project.created_at).toLocaleDateString()}</p>
+                  {project.member_role && (
+                    <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full capitalize">
+                      {project.member_role}
+                    </span>
+                  )}
+                </div>
               </Link>
             ))}
           </div>
