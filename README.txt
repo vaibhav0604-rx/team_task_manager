@@ -7,7 +7,6 @@ A full-stack project and task management app where admins can create projects, a
 - App: https://gilded-cajeta-8053f6.netlify.app
 - API: https://teamtaskmanager-production-a94b.up.railway.app
 - GitHub repo: https://github.com/vaibhav0604-rx/team_task_manager
-- Demo video: Add your 2-5 minute demo video link here before submission
 
 ## Features
 
