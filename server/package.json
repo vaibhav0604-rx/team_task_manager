@@ -8,7 +8,7 @@
     "dev": "nodemon index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Vaibhav Garg",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
